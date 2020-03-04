@@ -97,5 +97,5 @@ jobs:
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: Padavan-packages
+        name: Padavan-Newifi3
         path: /opt/images
