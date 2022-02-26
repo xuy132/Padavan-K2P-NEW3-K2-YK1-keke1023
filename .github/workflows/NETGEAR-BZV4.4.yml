@@ -7,10 +7,10 @@ on:
   push:
     tags:
     - 'v*'
-  #  branches: 
-  #    - master
-#  schedule:
-#    - cron: 0 8 * * 5
+    branches: 
+      - master
+  schedule:
+    - cron: 0 8 * * 5
   watch:
     types: [started]
 
@@ -115,3 +115,13 @@ jobs:
       with:
         name: Padavan-packages
         path: /opt/images
+        
+    - name: 删除旧的Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      
+      with:
+        keep_latest: 8
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
