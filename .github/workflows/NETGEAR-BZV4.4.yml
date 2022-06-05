@@ -13,10 +13,10 @@ on:
 #    - cron: 0 8 * * 5
   watch:
     types: [started]
-    
+
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
@@ -31,14 +31,21 @@ jobs:
         cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
     - name: Clone source code
+      env:
+        KERNEL: 4.4
       run: |
-        git clone --depth=1 https://github.com/xuy132/padavan-4.4.git /opt/rt-n56u
+        if [ $KERNEL = "4.4" ] ; then
+        git clone --depth=1 https://github.com/MeIsReallyBa/padavan-4.4.git /opt/rt-n56u
+        else
+        git clone --depth=1 https://github.com/chongshengB/rt-n56u.git /opt/rt-n56u
+        fi
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
     - name: Build Firmware
       env:
         TNAME: NETGEAR-BZV
+        KERNEL: 4.4
       run: |
         cd /opt/rt-n56u/trunk
         if [ ! -f configs/templates/$TNAME.config ] ; then
