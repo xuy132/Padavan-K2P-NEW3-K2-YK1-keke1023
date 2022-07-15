@@ -1,19 +1,6 @@
 name: Build NETGEAR-BZV vb1980 kvr repo
 
 on:
-
-  release:
-    types: [published]
-  push:
-    tags:
-    - 'v*'
-  #  branches: 
-  #    - master
-#  schedule:
-#    - cron: 0 8 * * 5
-  watch:
-    types: [started]
-
   workflow_dispatch:
     inputs:
       firmwarever:
