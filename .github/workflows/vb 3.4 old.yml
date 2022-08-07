@@ -89,7 +89,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_SSOBFS=y" >> .config #simple-obfs混淆插件
         ##流控QOS##
         echo "CONFIG_FIRMWARE_INCLUDE_SQM=y" >> .config #SQM QOS#CPU超频
-        echo "CONFIG_FIRMWARE_INCLUDE_OC=n" >> .config #CPU超频开关
+        echo "CONFIG_FIRMWARE_INCLUDE_OC=y" >> .config #CPU超频开关
         echo 'CONFIG_FIRMWARE_MT7621_OC="0x312"' >> .config #此处填写对应频率的十六进制：1000Mhz=0x312 1100Mhz=0x362 1120Mhz=0x372 1200Mhz=0x3B2
         #########################################################################################
         #自定义添加其它功能请参考源码configs/templates/目录下的config文件。按照上面的格式添加即可
@@ -104,5 +104,5 @@ jobs:
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: Padavan-vb
+        name: Padavan-vbsss
         path: /opt/images
