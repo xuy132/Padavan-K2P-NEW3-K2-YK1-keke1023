@@ -1,5 +1,5 @@
 #修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
-name: Build R4C  
+name: Build MI-4C  
 
 on:
   repository_dispatch:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
@@ -36,12 +36,17 @@ jobs:
       env:
         TNAME: MI-4C
       run: |
+        cd /opt/rt-n56u/trunk/user/smartdns
+        wget $(curl -s https://api.github.com/repos/pymumu/smartdns/releases/latest|egrep -o 'http.+.tarball.+[0-9]') -O smartdns.tar.gz && mkdir smartdns-ba282c8 && tar -xzvf smartdns.tar.gz -C smartdns-ba282c8 --strip-components 1
         cd /opt/rt-n56u/trunk
         if [ ! -f configs/templates/$TNAME.config ] ; then
         echo "configs/templates/$TNAME.config not found "
         exit 1
         fi
         cp -f configs/templates/$TNAME.config .config
+        sed -i 's/CONFIG_FIRMWARE_INCLUDE_SRELAY=y/CONFIG_FIRMWARE_INCLUDE_SRELAY=n/g' .config
+        #sed -i 's/CONFIG_FIRMWARE_INCLUDE_NFSD=n/CONFIG_FIRMWARE_INCLUDE_NFSD=y/g' .config
+        #sed -i 's/CONFIG_FIRMWARE_INCLUDE_NFSC=n/CONFIG_FIRMWARE_INCLUDE_NFSC=y/g' .config
         sed -i 's/CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE=n/CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE=y/g' .config
         ################################################################################################
         #因不同型号配置功能不一样，所以先把配置项删除，如果你自己要添加其他的，也要写上删除这一条，切记！！！
